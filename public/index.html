@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shinnie Star - Professional MRP Label Generator</title>
+    <link rel="icon" type="image/jpeg" href="https://dl.dropboxusercontent.com/scl/fi/8j9uhln1a5pv1pqmx1p8x/Logo.jpeg?rlkey=qc60p38pycfrmtu8ogxs7ipu3">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <style>
+        :root{--primary:#004aad;--accent:#ff9900;--bg:#f8fafc;--text:#1e293b}* {box-sizing:border-box;-webkit-print-color-adjust:exact}body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);margin:0;padding:0;user-select:none;color:var(--text)}.top-nav{background:#fff;padding:15px 50px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,0.1);border-bottom:4px solid var(--primary)}.brand-section{display:flex;align-items:center;gap:15px;text-decoration:none}.brand-section img{height:55px;border-radius:4px}.brand-name{color:var(--primary);font-size:28px;font-weight:800;margin:0;text-transform:uppercase;letter-spacing:1.5px}.container{max-width:1050px;margin:35px auto;background:white;padding:40px;border-radius:12px;box-shadow:0 4px 25px rgba(0,0,0,0.06)}.controls-card{background:#f1f5f9;padding:25px;border-radius:10px;margin-bottom:30px;border:1px solid #e2e8f0}.input-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:15px;align-items:flex-end}.field-item{display:flex;flex-direction:column;gap:5px}label{font-size:11px;font-weight:800;color:#475569;text-transform:uppercase}input{padding:10px;border:1px solid #cbd5e1;border-radius:6px;outline:none;font-size:14px;background:white}.printer-guide{background:#dbeafe;color:#1e40af;padding:12px;border-radius:8px;font-size:13px;font-weight:bold;margin-bottom:15px;border:1px dashed #3b82f6;text-align:center}.button-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;border-top:1px solid #cbd5e1;padding-top:20px}button{padding:12px 18px;border:none;border-radius:6px;cursor:pointer;font-weight:700;font-size:13px;transition:0.2s;display:flex;align-items:center;gap:6px}.btn-generate{background:var(--primary);color:white}.btn-update{background:var(--accent);color:white}.btn-sample{background:#475569;color:white}.btn-reset{background:#ef4444;color:white}.btn-print-main{background:#10b981;color:white;width:100%;font-size:20px;margin-top:20px;justify-content:center}#printArea{display:flex;flex-wrap:wrap;gap:15px;justify-content:center;margin-top:30px}.label-sheet{border:2.5px solid #000;background:#fff;padding:12px;display:flex;flex-direction:column;box-sizing:border-box;page-break-inside:avoid;overflow:hidden}.label-brand{font-size:1.5em;font-weight:900;text-align:center;border-bottom:2.5px solid #000;margin-bottom:8px;padding-bottom:4px;text-transform:uppercase}.info-row{font-size:12px;margin-bottom:2px;display:flex;color:#000}.info-label{font-weight:800;width:110px;flex-shrink:0}.price-highlight{background:#000;color:#fff;margin:8px 0;padding:6px;text-align:center;font-size:16px;font-weight:bold}.mfg-info{font-size:9px;line-height:1.2;height:35px;overflow:hidden;margin-bottom:5px;border-top:1px solid #eee;padding-top:5px}.barcode-box{margin-top:auto;text-align:center;width:100%}.barcode-box svg{width:100% !important;height:auto !important;min-height:70px}@media print{.top-nav,.container,.footer-powered,#printBtn,button,.controls-card{display:none !important}body{background:white}#printArea{margin:0;padding:0;display:block}.label-sheet{margin:0 auto 10px auto;border-width:1.5px}}
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div class="top-nav">
+    <a href="https://www.shinniestar.com" class="brand-section">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/8j9uhln1a5pv1pqmx1p8x/Logo.jpeg?rlkey=qc60p38pycfrmtu8ogxs7ipu3" alt="Logo">
+        <div><h1 class="brand-name">Shinnie Star</h1></div>
+    </a>
+    <a href="https://www.shinniestar.com" class="btn-site" style="background:var(--primary);color:white;padding:10px;border-radius:5px;text-decoration:none">Back to Website</a>
+</div>
+
+<div class="container">
+    <div class="tool-intro" style="text-align:center">
+        <h2>MRP Label Generator Tool</h2>
+        <p>Create high-quality scannable MRP labels for your e-commerce business.</p>
+    </div>
+
+    <div class="controls-card">
+        <div class="input-grid">
+            <div class="field-item"><label>Width (Inches)</label><input type="number" id="lblW" value="4.0" step="0.1" oninput="_0x4f2a()"></div>
+            <div class="field-item"><label>Height (Inches)</label><input type="number" id="lblH" value="3.0" step="0.1" oninput="_0x4f2a()"></div>
+            <div class="field-item"><label>Number of Copies</label><input type="number" id="lblCopies" value="1" min="1"></div>
+            <div class="field-item"><label>Select CSV File</label><input type="file" id="csvInput" accept=".csv"></div>
+            <div class="field-item" style="flex-direction:row;align-items:center;gap:8px">
+                <input type="checkbox" id="autoHSN" style="width:18px;height:18px;"><label style="cursor:pointer;margin:0" for="autoHSN">Auto HSN</label>
+            </div>
+        </div>
+        <div id="printerGuide" class="printer-guide">💡 Printer Settings Guide: Set your Thermal Printer size to 101.6mm x 76.2mm</div>
+        <div class="button-row">
+            <button class="btn-generate" onclick="_0x5d1e()">🚀 Generate Labels</button>
+            <button class="btn-update" onclick="_0x1b4a()">🔄 Update Size</button>
+            <button class="btn-sample" onclick="_0xsample()">📥 Sample CSV</button>
+            <button class="btn-reset" onclick="location.reload()">🧹 Reset Tool</button>
+        </div>
+    </div>
+    <button class="btn-print-main" id="printBtn" style="display:none" onclick="window.print()">🖨️ PRINT LABELS NOW</button>
+    <div style="margin-top:30px;font-size:14px;color:#64748b;border-top:1px solid #eee;padding-top:20px">
+        <strong>About This Tool:</strong><br>Professional automation utility for e-commerce sellers to generate retail-ready MRP labels.
+    </div>
+</div>
+<div id="printArea"></div>
+<div style="text-align:center;padding:20px;font-weight:bold;color:var(--primary)">POWERED BY SHINNIE STAR</div>
+
+<script>
+/**
+ * SHINNIE STAR SECURED MODULE
+ * DO NOT ATTEMPT TO DECOMPILE
+ */
+(function(){
+    const _0xblock = function(){
+        document.onkeydown = function(e){
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85) || (e.ctrlKey && e.keyCode == 83)){
+                return false;
+            }
+        };
+    };
+    _0xblock();
+
+    let _0xdata = null;
+    const _0xhsn = {"jeans":"6203","tshirt":"6109","shirt":"6205","trouser":"6203"};
+
+    window._0x4f2a = function(){
+        const w = document.getElementById('lblW').value;
+        const h = document.getElementById('lblH').value;
+        document.getElementById('printerGuide').innerHTML = `💡 Printer Settings Guide: Set your Thermal Printer size to <b>${(w*25.4).toFixed(1)}mm x ${(h*25.4).toFixed(1)}mm</b>`;
+    };
+
+    window._0xsample = function(){
+        const h = "Category,BRAND,COLOR,STYLE ID /SKU ID,Size,QTY,MRP Rs.XXX.00 (Inclusive of all taxes),Generic Name,Manufactured by / Marketed by,EAN/FSN/LID Barcode\n";
+        const d = "Jeans,SHINNIE STAR,BLACK,SS-99,32,1,2499.00,Men's Jeans,Innovative Edge Tech Delhi,LSTJEAHGGUN4UAPQJWGLJGOQR";
+        const b = new Blob([h + d], {type: 'text/csv'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.download = 'ShinnieStar_Sample.csv';
+        a.click();
+    };
+
+    document.getElementById('csvInput').addEventListener('change', function(e){
+        Papa.parse(e.target.files[0], {
+            header: true, skipEmptyLines: true,
+            complete: function(r){ _0xdata = r.data; alert("Data Encrypted & Loaded."); }
+        });
+    });
+
+    window._0x5d1e = function(){
+        if(!_0xdata) return alert("Upload CSV!");
+        _0x1b4a();
+    };
+
+    window._0x1b4a = function(){
+        const w = document.getElementById('lblW').value;
+        const h = document.getElementById('lblH').value;
+        const c = parseInt(document.getElementById('lblCopies').value) || 1;
+        const auto = document.getElementById('autoHSN').checked;
+        const area = document.getElementById('printArea');
+        area.innerHTML = '';
+        let idx = 0;
+
+        _0xdata.forEach(r => {
+            const lid = r['EAN/FSN/LID Barcode'] || '';
+            const cat = (r['Category'] || '').toLowerCase();
+            const hsnVal = auto ? (_0xhsn[cat] || "N/A") : "";
+            
+            for(let i=0; i<c; i++){
+                const div = document.createElement('div');
+                div.className = 'label-sheet';
+                div.style.width = w + "in";
+                div.style.height = h + "in";
+                div.innerHTML = `
+                    <div class="label-brand">${r['BRAND']||'BRAND'}</div>
+                    <div class="info-row"><span class="info-label">Category:</span><span>${r['Category']||''}</span></div>
+                    ${auto ? `<div class="info-row"><span class="info-label">HSN Code:</span><span>${hsnVal}</span></div>` : ''}
+                    <div class="info-row"><span class="info-label">Color:</span><span>${r['COLOR']||''}</span></div>
+                    <div class="info-row"><span class="info-label">Generic Name:</span><span>${r['Generic Name']||''}</span></div>
+                    <div class="info-row"><span class="info-label">Style ID:</span><span>${r['STYLE ID /SKU ID']||''}</span></div>
+                    <div class="info-row"><span class="info-label">Size:</span><span>${r['Size']||''}</span></div>
+                    <div class="price-highlight">MRP Rs. ${r['MRP Rs.XXX.00 (Inclusive of all taxes)']||'0.00'}/-</div>
+                    <div class="mfg-info"><strong>Mfg/Mkt by:</strong> ${r['Manufactured by / Marketed by']||''}</div>
+                    <div class="barcode-box"><svg id="bc-${idx}"></svg></div>`;
+                area.appendChild(div);
+                if(lid) JsBarcode(`#bc-${idx}`, lid, {format:"CODE128",width:2.2,height:70,displayValue:true,fontSize:16,fontOptions:"bold",margin:12});
+                idx++;
+            }
+        });
+        document.getElementById('printBtn').style.display = 'block';
+    };
+})();
+</script>
+</body>
+</html>
